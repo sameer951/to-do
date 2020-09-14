@@ -3,14 +3,11 @@ const addBtn = document.getElementById('addButton');
 var todoList = document.getElementById('todoList');
 var listArray = [];
 var todo = { data: 'Hi', isCompleted: false }
-var removeItem = function (e) {
-    e.stopPropagation()
-    var parent = this.parentElement.parentElement;
-    parent.removeChild(this.parentElement);
-
-    var data = this.parentElement.firstChild.innerText;
+var removeItem = (data) => {
+    let list = localStorage.getItem('todoList');
+    let listArray = list ? JSON.parse(list) : [];
     for (var i = 0; i < listArray.length; i++) {
-        if (listArray[i].content == data) {
+        if (listArray[i].data == data) {
             listArray.splice(i, 1);
             localStorage.setItem('todoList', JSON.stringify(listArray));
             addTodo(true);
@@ -22,7 +19,7 @@ var removeItem = function (e) {
 var chageCompete = (data) => {
     // var data = this.parentElement.innerText;
     let list = localStorage.getItem('todoList');
-    listArray = list ? JSON.parse(list) : [];
+   let listArray = list ? JSON.parse(list) : [];
     for (var i = 0; i < listArray.length; i++) {
         if (listArray[i].data == data) {
             listArray[i].isCompleted = !listArray[i].isCompleted;
@@ -41,7 +38,7 @@ var createItem = (todo) => {
     itemIncompBtn.className = 'btn btn-danger';
     itemIncompBtn.innerText = 'X';
     itemIncompBtn.className = "badge float-right";
-    itemIncompBtn.addEventListener('click', removeItem);
+    itemIncompBtn.addEventListener('click', () => removeItem(todo.data));
     li.appendChild(itemIncompBtn);
     todoList.appendChild(li);
 }
